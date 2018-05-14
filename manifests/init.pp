@@ -1,4 +1,4 @@
-class sal(
+class ts_sal(
 	String $sal_pwd ,
 	String $salmgr_pwd,
 	String $lsst_users_home_dir,
