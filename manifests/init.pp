@@ -12,12 +12,12 @@ class ts_sal(
 	$ts_opensplice_branch = "master"
 ){
 
-	include '::sal::python'
-	class{"::sal::dds_firewall":
+	include 'ts_sal::python'
+	class{"ts_sal::dds_firewall":
 		firewall_dds_zone_name => $firewall_dds_zone_name,
 		firewall_dds_interface => $sal_network_interface
 	}
-	class{"::sal::users":
+	class{"ts_sal::users":
 		sal_pwd => $sal_pwd,
 		salmgr_pwd => $salmgr_pwd,
 		lsst_users_home_dir => $lsst_users_home_dir

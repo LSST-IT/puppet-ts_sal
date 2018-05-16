@@ -1,4 +1,4 @@
-class sal::python{
+class ts_sal::python{
 	# Get custom Python
 	#TODO Move python path to hiera
 	exec{ "get-custom-python":

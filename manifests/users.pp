@@ -1,4 +1,4 @@
-class sal::users(
+class ts_sal::users(
 	$sal_pwd = '$1$LSST$clNeErmKCl0HbZmB9d2Bb.' ,
 	$salmgr_pwd = '$1$LSST$clNeErmKCl0HbZmB9d2Bb.',
 	$lsst_users_home_dir = "/home"
