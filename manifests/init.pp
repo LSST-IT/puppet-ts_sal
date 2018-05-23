@@ -106,8 +106,9 @@ class ts_sal(
 		ensure => present,
 		path => "${ts_opensplice_path}/OpenSpliceDDS/V6.4.1/HDE/x86_64.linux/etc/config/ospl.xml",
 		line => "<NetworkInterfaceAddress>${sal_network_interface}</NetworkInterfaceAddress>",
-		match => "<NetworkInterfaceAddress>AUTO</NetworkInterfaceAddress>",
-		require => Vcsrepo[$ts_opensplice_path]
+		match => "<NetworkInterfaceAddress>*",
+		require => Vcsrepo[$ts_opensplice_path],
+		replace => true,
 	}
 	
 	file_line{ 'sal_dds_path_update_sdk':
