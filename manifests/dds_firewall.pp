@@ -31,5 +31,6 @@ class ts_sal::dds_firewall ($firewall_dds_zone_name = "lsst_zone", $firewall_dds
 		path    => '/usr/bin:/usr/sbin',
 		command => "firewall-cmd --permanent --zone=${firewall_dds_zone_name} --add-protocol=igmp ; firewall-cmd --reload",
 		require => Service['firewalld'],
+		onlyif => "! [[ \"\$(firewall-cmd --list-protocols --zone=lsst_zone)\" = *\"igmp\"* ]]"
 	}
 }
