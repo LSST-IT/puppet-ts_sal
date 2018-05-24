@@ -68,7 +68,7 @@ class ts_sal(
 		ensure => directory,
 		owner => 'salmgr',
 		group => 'lsst',
-		recurse => true,
+		#recurse => true,
 		require => [User['salmgr'] , Group['lsst']]
 	}
 
@@ -76,7 +76,7 @@ class ts_sal(
 		ensure => directory,
 		owner => 'salmgr',
 		group => 'lsst',
-		recurse  => true,
+		#recurse  => true,
 		require => [User['salmgr'] , Group['lsst']]
 	}
 
@@ -155,7 +155,8 @@ class ts_sal(
 	exec { 'environment_configuration':
 		path => '/usr/bin:/usr/sbin',
 		command => "echo -e 'source ${ts_sal_path}/setup.env' > /etc/profile.d/sal.sh",
-		require => [File_line["sal_dds_path_update_sdk"], File_line["sal_dds_path_update_ospl"]]
+		require => [File_line["sal_dds_path_update_sdk"], File_line["sal_dds_path_update_ospl"]],
+		onlyif => "test ! -f /etc/profile.d/sal.sh"
 	}
 
 }
