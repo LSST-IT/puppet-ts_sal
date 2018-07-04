@@ -9,7 +9,11 @@ class ts_sal(
 	String $ts_opensplice_path,
 	String $sal_network_interface,
 	$ts_sal_branch = "master",
-	$ts_opensplice_branch = "master"
+	$ts_opensplice_branch = "master",
+	# Adding optional values for DM Header Service which is using Python 2.7
+	$ts_python_build_version = "3.6m",
+	$ts_python_build_location = "/usr/local",
+	$ts_pythonpath = "/usr/lib/python3.6/site-packages/"
 ){
 
 	include 'ts_sal::python'
@@ -128,25 +132,25 @@ class ts_sal(
 	}
 	
 	
-	file_line{"Update python build version":
+	file_line{"Update python build version to ${ts_python_build_version}":
 		ensure => present,
-		line => "export PYTHON_BUILD_VERSION=3.6m",
-		match => "### export PYTHON_BUILD_VERSION=3.6m",
+		line => "export PYTHON_BUILD_VERSION=${ts_python_build_version}",
+		match => "### export PYTHON_BUILD_VERSION=",
 		path => "${ts_sal_path}/setup.env",
 		require => [ File_line["sal_dds_path_update_sdk"], File_line["sal_dds_path_update_ospl"] ] ,
 	}
 	
-	file_line{"Update python build location":
+	file_line{"Update python build location to ${ts_python_build_location}":
 		ensure => present,
-		line => "export PYTHON_BUILD_LOCATION=/usr/local",
+		line => "export PYTHON_BUILD_LOCATION=${ts_python_build_location}",
 		match => "### export PYTHON_BUILD_LOCATION=/usr/local",
 		path => "${ts_sal_path}/setup.env",
 		require => [ File_line["sal_dds_path_update_sdk"], File_line["sal_dds_path_update_ospl"] ] ,
 	}
 
-	file_line{"Update PYTHONPATH":
+	file_line{"Update PYTHONPATH as \${SAL_WORK_DIR}/lib:${ts_pythonpath}":
 		ensure => present,
-		line => 'export PYTHONPATH=$PYTHONPATH:${SAL_WORK_DIR}/lib:/usr/lib/python3.6/site-packages/',
+		line => "export PYTHONPATH=\$PYTHONPATH:\${SAL_WORK_DIR}/lib:${ts_pythonpath}",
 		match => 'export PYTHONPATH=$PYTHONPATH:${SAL_WORK_DIR}/lib',
 		path => "${ts_sal_path}/setup.env",
 		require => [ File_line["sal_dds_path_update_sdk"], File_line["sal_dds_path_update_ospl"] ] ,
