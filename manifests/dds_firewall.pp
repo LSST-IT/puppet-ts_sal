@@ -1,6 +1,7 @@
 class ts_sal::dds_firewall ($firewall_dds_zone_name = "lsst_zone", $firewall_dds_interface ){
 	# Firewall configuration
 	#TODO define sources for this zone
+
 	firewalld_zone { $firewall_dds_zone_name:
 		ensure => present,
 		target => 'DROP',
