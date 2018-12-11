@@ -8,18 +8,33 @@ class ts_sal(
 	String $ts_opensplice_repo,
 	String $ts_opensplice_path,
 	String $sal_network_interface,
-	$ts_sal_branch = "master",
-	$ts_opensplice_branch = "master",
+	String $ts_sal_branch,
+	String $ts_opensplice_branch,
 	# Adding optional values for DM Header Service which is using Python 2.7
-	$ts_python_build_version = "3.6m",
-	$ts_python_build_location = "/usr/local",
-	$ts_pythonpath = "/usr/lib/python3.6/site-packages/"
+	$ts_python_build_version,
+	$ts_python_build_location,
+	$ts_pythonpath,
 ){
 
-	include 'ts_sal::python'
-	class{"ts_sal::dds_firewall":
-		firewall_dds_zone_name => $firewall_dds_zone_name,
-		firewall_dds_interface => $sal_network_interface
+	#include 'ts_sal::python'
+
+
+	if ! defined(Package["epel-release"]){
+		package{"epel-release":
+			ensure => installed
+		}
+	}
+	package{"python36":
+		ensure => installed,
+		require => Package["epel-release"]
+	}
+
+	# This checks if the module firewalld was ever loaded, to be able to work without firewall in development
+	if defined(Class["firewalld"]) {
+		class{"ts_sal::dds_firewall":
+			firewall_dds_zone_name => $firewall_dds_zone_name,
+			firewall_dds_interface => $sal_network_interface
+		}
 	}
 	class{"ts_sal::users":
 		sal_pwd => $sal_pwd,
