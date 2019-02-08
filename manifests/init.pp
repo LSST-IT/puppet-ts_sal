@@ -29,6 +29,11 @@ class ts_sal(
 		require => Package["epel-release"]
 	}
 
+  package{"python36-devel":
+    ensure => installed,
+    require => Package["epel-release"]
+  }
+
 	# This checks if the module firewalld was ever loaded, to be able to work without firewall in development
 	if defined(Class["firewalld"]) {
 		class{"ts_sal::dds_firewall":
